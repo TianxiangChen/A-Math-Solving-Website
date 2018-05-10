@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" href={{ url_for('static', filename='css/profile.css') }} type="text/css">
+<head>
+    <meta charset="UTF-8">
+    <title>Re-type Email</title>
+</head>
+<div class="container gallery-container">
+  <br>
+    <h1>Oops... We cannot send the confirmation to the mail you provided</h1>
+    <h3>Please provided another email</h3><br>
+    <div align="center">
+      <h4>Your current email: {{ encrypted_email }} </h4><br>
+      <form class="form-horizontal" action="/retype_email" method=post>
+        <h4>New email: <input type="email" name="new_email"></h4><br>
+        <button type="submit" class="btn-default btn-lg">Submit</button>
+      </form>
+    </div><br>
+</div>
+{% endblock %}

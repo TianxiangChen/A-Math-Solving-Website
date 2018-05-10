@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" href={{ url_for('static', filename='css/profile.css') }} type="text/css">
+<meta charset="UTF-8">
+<title>Q&ampA</title>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<style>
+  .active{background-color: #D3D3D3;}
+  .thead{
+    cursor: pointer;
+  }
+</style>
+<script>
+var myapp1 = angular.module('myApp1', []);
+myapp1.controller('data', ['$scope','$filter', function($scope,$filter){
+  var rList = {{results | safe}};
+
+
+
+  $scope.resultlist = $filter('orderBy')(rList, 'qaid');
+  console.log($scope.resultlist);
+  $scope.clickSort = function(arg){
+    arguments.callee['Click' + arg] = !arguments.callee['Click' + arg];
+    $scope.resultlist = $filter('orderBy')($scope.resultlist, arg, arguments.callee['Click' + arg]);
+  };
+
+  $scope.clickSearch = function(){
+    $scope.resultlist = $filter('filter')(rList, $scope.searchKeyWord);
+  };
+
+}]);
+</script>
+
+<br>
+<div class="container gallery2-container" ng-app='myApp1' ng-controller='data'>
+  <div align='left'>
+    <h2><strong>Question and Answer (Q&ampA) Dashboard</strong></h2><br><br>
+    {% if status == 1%}
+    <h4><a href= "{{url_for('create_question')}}">Have a question? Ask it.</a></h4>
+    {% endif %}
+    <h4><input type="text" ng-model="searchKeyWord" value="type to search"><input type="button", ng-click="clickSearch()" value="search"><h4>
+    <br>
+    <div class="table-responsive"><h4>
+      <table class="table table-striped">
+        <tr>
+          <th><span class='thead' ng-click="clickSort('qaid')">id</span></th>
+          <th><span class='thead' ng-click="clickSort('question_title')">question title</span></th>
+          <th><span class='thead' ng-click="clickSort('author')">author</span></th>
+          <th><span class='thead' ng-click="clickSort('question_time')">post_date</span></th>
+          <th>is_solved</th>
+        </tr>
+
+        <tr ng-repeat = 'result in resultlist'>
+           <th>{{ '{{ result.qaid }}' }}</th>
+           <th><a ng-href='question_detail/{{'{{result.qaid}}'}}'>{{ '{{ result.question_title }}' }}</a></th>
+           <th>{{ '{{ result.author }}' }}</th>
+           <th>{{ '{{ result.question_time }}' }}</th>
+           <th>{{ '{{ result.best_ans_user }}' }}</th>
+        </tr>
+      </table>
+    </h4></div>
+  <br>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ECE1779 assignment 3</title>
+    <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <link rel="stylesheet" href={{ url_for('static', filename='css/main.css') }} type="text/css">
+    <link rel="shortcut icon" href={{ url_for('static', filename='favicon.ico') }}>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+    html {
+      position: relative;
+      /*min-height: 80%;*/
+    }
+    body {
+      /* Margin bottom by footer height */
+      margin-bottom: 0;
+      width:100%;
+    }
+    .footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      /* Set the fixed height of the footer here */
+      height: 50px;
+      margin-bottom: 0;
+      background-color: #fff;
+    }
+    .inactiveLink {
+       pointer-events: none;
+       cursor: default;
+    }
+    </style>
+    <script>
+      function startTime() {
+          var today = new Date();
+          var h = today.getHours();
+          var m = today.getMinutes();
+          var s = today.getSeconds();
+          m = checkTime(m);
+          s = checkTime(s);
+          document.getElementById('txt').innerHTML =
+          "Current Time: " + h + ":" + m + ":" + s;
+          var t = setTimeout(startTime, 500);
+      }
+      function checkTime(i) {
+          if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+          return i;
+      }
+  </script>
+  </head>
+  <body onload="startTime()">
+  <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{{ url_for('home') }}">ECE1779 A3</a>
+      <div class="navbar-brand" id="txt"></div>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="{{ url_for('about') }}">About</a></li>
+        <li><a href="{{ url_for('qanda') }}">Q&ampA</a></li>
+      </ul>
+      <!-- <ul class="nav navbar-nav ">
+        <li><a href="" class="inactiveLink"><div id="txt"></div></a></li>
+      </ul> -->
+      <ul class="nav navbar-nav navbar-right">
+        {% if 'username' in session %}
+              <li><a href="{{ url_for('profile') }}">Gallery</a></li>
+              <li><a href="{{ url_for('upload_form') }}">Upload</a></li>
+              <li><a href="{{ url_for('signout') }}">Sign Out</a></li>
+              {% else %}
+              <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+              <li><a href="{{ url_for('signin') }}">Sign In</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+ {% block content %}
+ {% endblock %}
+</div>
+<br><br><br><br><br>
+<div class="footer">
+  <div style="text-align:center; position: relative; top: 50%; transform: translateY(-50%);">
+    <p class="text-muted" style="margin:5px">&copy2017, Luyuan Chen, Tianxiang Chen, ECE1779A3</p>
+  </div>
+</div>
+</body>
+</html>

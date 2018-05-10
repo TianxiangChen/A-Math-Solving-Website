@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" href={{ url_for('static', filename='css/profile.css') }} type="text/css">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmation</title>
+</head>
+<div class="container gallery-container">
+  <br>
+  <h1>Confirmation page</h1>
+  <h2>{{ msg }}</h2>
+  <form action="{{ url_for('home') }}" method="GET">
+    <button type="submit" class="btn btn-outline-secondary">Back to Homepage</button>
+  </form>
+  <br>
+</div>
+{% endblock %}

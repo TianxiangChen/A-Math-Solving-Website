@@ -1,0 +1,125 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" href={{ url_for('static', filename='css/profile.css') }} type="text/css">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gallery</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.css">
+
+
+<!-- Latest compiled and minified JavaScript -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    });
+
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script>
+    </head>
+
+
+    <div class="container gallery-container">
+
+        <h1>Welcome to your questions, {{ session['username'] }}!</h1>
+
+        {% if image_dict.keys() %}
+            <p class="page-description text-center">Click to see Answers</p>
+            <p class="page-description text-center">Or use the easy-upload module</p>
+            <form action="{{ url_for('upload_form') }}" method="GET">
+
+            <button type="submit" class="btn btn-sm btn-primary" id="js-upload-submit">Upload more</button>
+            </form>
+
+        {% else %}
+            <p class="page-description text-center">Please start with uploading pictures</p>
+            <form action="{{ url_for('upload_form') }}" method="GET">
+
+            <button type="submit" class="btn btn-sm btn-primary" id="js-upload-submit">Start uploading</button>
+            </form>
+
+        {% endif %}
+
+<!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Solution</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Input photo</h4>
+                        <img src="" class="img-responsive" id="qimg">
+                        <hr>
+                        <h4>Recognized input</h4>
+                        <div id="input_latex">
+                            \[
+                            \int x dx
+                            \]
+                        </div>
+                        <hr>
+                        <h4>Calculated output</h4>
+                        <div id="soln_latex">
+                            \[\frac{1}{2} x^2+c\]
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+
+    <!-- Gallery -->
+        <div class="tz-gallery">
+
+            <div class="row">
+                {% for image_name, transforms in image_dict.items() %}
+                <div class="col-sm-6 col-md-4">
+                    <img class="img-responsive" src="{{image_name}}" onclick="openModal(this);">
+                    <div class="hiddenImg">
+                        {% for transformImg in transforms %}
+                            <p style="display: none">{{ transformImg }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </div>
+    <!-- Button trigger modal -->
+
+ <script>
+function openModal(obj) {
+  var imgs = [];
+
+  var transformImgs = obj.nextElementSibling.children;
+
+  for (var i = transformImgs.length - 1; i >= 0; i--) {
+      imgs.push(transformImgs[i].innerHTML);
+  }
+
+  document.getElementById('qimg').src = imgs[2];
+  document.getElementById('input_latex').innerHTML = '\\[ ' + imgs[1] + ' \\]';
+  document.getElementById('soln_latex').innerHTML = '\\[ ' + imgs[0] + ' \\]';
+  console.log(imgs);
+  MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+  $('#myModal').modal({
+    backdrop: false
+  })
+}
+
+</script>
+{% endblock %}

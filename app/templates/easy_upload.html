@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+ 
+{% block content %}
+
+  {% for message in form.userID.errors %}
+  <div class="alert alert-danger alert-dismissable fade in">
+    <strong>Error:</strong> {{ message }}
+  </div>
+  {% endfor %}
+  {% for message in form.password.errors %}
+  <div class="alert alert-danger alert-dismissable fade in">
+    <strong>Error:</strong> {{ message }}
+  </div>
+  {% endfor %}
+
+  {% if success %}
+  <div class="alert alert-success alert-dismissable fade in">
+    <strong>Success:</strong> Uploaded picture, check in <a href="/profile">Gallery</a>!
+  </div>
+  {% endif %}
+
+
+  <form action="{{ url_for('easy_upload') }}" method=post enctype="multipart/form-data">
+  	<div class="login">
+		<div class="login-screen">
+			<div class="app-title">
+				<h1>Easy upload</h1>
+			</div>
+            {{ form.hidden_tag() }}
+
+			<div class="login-form">
+				<div class="control-group">
+                    {{ form.userID(class="login-field", placeholder="username") }}
+				</div>
+
+				<div class="control-group">
+                    {{ form.password(class="login-field", placeholder="password") }}
+				</div>
+
+        <div class="control-group">
+                    {{ form.uploadedfile(class="login-field", placeholder="file") }}
+        </div>
+
+
+                    {{ form.submit(class='btn')}}
+			    <br>
+			</div>
+
+            No account? <a href="/signup">Register!</a><br>
+		</div>
+	</div>
+  </form>
+
+     
+{% endblock %}

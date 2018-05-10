@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" href={{ url_for('static', filename='css/profile.css') }} type="text/css">
+<head>
+    <meta charset="UTF-8">
+    <title>Q&ampA Details</title>
+</head>
+<div>
+    <div class="container qanda-detail-question-container">
+        <h4 align="left"><span class="emphasize">Qid{{q_detail['qaid']}}</span></h4>
+        <h1 align="center">{{q_detail['question_title']}}</h1><br>
+        <h3 align="left">{{q_detail['question']}}</h3><br><br>
+        <h5 align="right">Questioned by <span class='emphasize'>{{q_detail['author']}}</span> at <span class='emphasize'>{{q_detail['question_time']}}</span></h5>
+    </div>
+    <div>
+        {% if is_solved == 1 %}
+            <br>
+            <div class="container qanda-detail-bestanswer-container">
+            <h5 align="left"><span class='emphasize'><b>Best Answer</b></span></h5>
+            <br><h3>{{best_ans['answer']}}</h3><br>
+            <h5 align="right">Answered by <span class='emphasize'>{{best_ans['ans_user']}}</span> at <span class='emphasize'>{{best_ans['ans_time']}}</span></h5>
+            </div>
+            {% for answer in answers %}
+                <br>
+                <div class="container qanda-detail-answer-container">
+                <h5 align="left"><span class='emphasize'>Other Answer</span></h5>
+                <br><h3>{{answer['answer']}}</h3><br>
+                <h5 align="right">Answered by <span class='emphasize'>{{answer['ans_user']}}</span> at <span class='emphasize'>{{answer['ans_time']}}</span></h5>
+                </div>
+            {% endfor %}
+        {% else %}
+            {% if questioner_self == 1 %}
+                {% if is_answered == 1 %}
+                    <br><h4 align="center">Select a correct answer if there is one.</h4>
+                    <div><form action="{{  url_for('select_best_answer',qaid=q_detail['qaid']) }}"  method="POST">
+                      {% for answer in answers %}
+                          <br>
+                          <div class="container qanda-detail-answer-container">
+                          <br><input type="radio" align="left" name="choice" value="{{answer['ans_user']}}">
+                          <span align="left" class='emphasize'>Answer</span><br>
+                          <h3>{{answer['answer']}}</h3><br>
+                          <h5 align="right">Answered by <span class='emphasize'>{{answer['ans_user']}}</span> at <span class='emphasize'>{{answer['ans_time']}}</span></h5>
+                          </div>
+                      {% endfor %}
+                  </div>
+                    <br>
+                    <table align="center">
+                    <td><input type="Submit" value="Yes"></td>
+                        <td><input type="Reset"  value="Clear"></a></td>
+                    </table></form>
+                    <h5 align="center"><br><br>No preferred answer? Wait a bit and someone might come to help. </h5><br>
+                {% else %}
+                    <br><h3>No answer yet.</h3>
+                {% endif %}
+            {% else %}
+                {% if is_answered == 1 %}
+                    {% for answer in answers %}
+                     <br>
+                     <div class="container qanda-detail-answer-container">
+                         <h5 align="left"><span class='emphasize'>Answer</span></h5>
+                         <br><h3>{{answer['answer']}}</h3><br>
+                         <h5 align="right">Answered by <span class='emphasize'>{{answer['ans_user']}}</span> at <span class='emphasize'>{{answer['ans_time']}}</span></h5>
+                     </div>
+                    {% endfor %}
+                    {% if user_answered == 1 %}
+                        <h4 align="center"><br>You have answered this question.</h4>
+                    {% else %}
+                        {% if is_logged_in == 1 and is_confirmed == 1 %}
+                            <h3><form action="{{  url_for('answer',qaid=q_detail['qaid']) }}  " method=POST>
+                            <br>Have a solution?<br><br>
+                            <textarea rows="4" cols="50" type="text" name="sol_form"></textarea><br>
+                            <input type="submit">
+                            <input type="reset">
+                            </form></h3>
+                        {% endif %}
+                    {% endif %}
+                {% else %}<br><h3>No answer yet.</h3>
+                       {% if is_logged_in == 1 and is_confirmed == 1 %}
+                            <h3><form action="{{  url_for('answer',qaid=q_detail['qaid']) }}  " method=POST>
+                            Have a solution?<br><br>
+                            <textarea rows="4" cols="50" type="text" name="sol_form"></textarea><br>
+                            <input type="submit">
+                            <input type="reset">
+                            </form></h3>
+                       {% endif %}
+                {% endif %}
+             {% endif %}
+      {% endif %}
+    </div>
+</div><br><br><br>
+{% endblock %}

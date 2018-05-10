@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+  <form action="{{ url_for('signup') }}" method=post>
+  	<div class="login">
+		<div class="login-screen">
+			<div class="app-title">
+				<h1>Sign up</h1>
+			</div>
+            {{ form.hidden_tag() }}
+
+			<div class="login-form">
+				<div class="control-group">
+                    {% for message in form.username.errors %}
+                      <div class="alert alert-danger alert-dismissable fade in">
+                        <strong>Error:</strong> {{ message }}
+                      </div>
+                    {% endfor %}
+                    {{ form.username(class="login-field", placeholder="username") }}
+				</div>
+
+				<div class="control-group">
+                      {% for message in form.email.errors %}
+                      <div class="alert alert-danger alert-dismissable fade in">
+                        <strong>Error:</strong> {{ message }}
+                      </div>
+                      {% endfor %}
+                    {{ form.email(class="login-field", placeholder="email") }}
+				</div>
+
+				<div class="control-group">
+                  {% for message in form.password.errors %}
+                      <div class="alert alert-danger alert-dismissable fade in">
+                        <strong>Error:</strong> {{ message }}
+                      </div>
+                  {% endfor %}
+                    {{ form.password(class="login-field", placeholder="password") }}
+				</div>
+				<div class="control-group">
+                    {{ form.conf_password(class="login-field", placeholder="confirm password") }}
+				</div>
+
+                    {{ form.submit(class='btn')}}
+			    <br>
+			</div>
+
+            Already registered? <a href="{{ url_for('signin')}}">Sign in!</a>
+		</div>
+	</div>
+  </form>
+
+{% endblock %}

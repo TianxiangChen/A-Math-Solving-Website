@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" href={{ url_for('static', filename='css/profile.css') }} type="text/css">
+<head>
+    <meta charset="UTF-8">
+    <title>Acitivation</title>
+</head>
+<div class="container gallery-container">
+  <br>
+    <h1>You are almost finishing the registration...</h1>
+    <h3>Before starting to use your account, please activate your account by the email.</h3><br>
+    <div align="center">
+      <form class="form-horizontal" action="/activate_send" method=post>
+        <h4>Click to send the actvation email to:</h4>
+        <h5>{{ encrypted_email }}</h5>
+        <button type="submit" class="btn-default btn-lg">Submit</button>
+      </form>
+    </div><br>
+</div>
+{% endblock %}

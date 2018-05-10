@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" href={{ url_for('static', filename='css/profile.css') }} type="text/css">
+<style>
+textarea {
+  resize: none;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.form-horizontal{
+    display:block;
+    width:90%;
+    margin:0 auto;
+}
+</style>
+<head>
+    <meta charset="UTF-8">
+    <title>Create a Q&ampA</title>
+</head>
+<br>
+<div class="container qanda-question-container">
+  <div align="center">
+    <div><h1><strong>Have a question?</strong></h1></div>
+    <div><center>
+     <form class="form-horizontal" action="{{  url_for('submit_question') }}  " method=post>
+       <h3>
+         <textarea class="form-control" rows="1" type="text" name="question_title" placeholder="Type your question title here"></textarea>
+         <p></p>
+         <textarea class="form-control" rows="6" type="text" name="question" placeholder="Describe your question in detail"></textarea>
+       </h3><br>
+       <button type="submit" class="btn-success btn-md">Submit</button>&nbsp;
+       <button type="reset" class="btn-danger btn-md">Reset</button>
+     </form>
+    </center></div>
+  </div>
+  <br><br>
+</div>
+{% endblock %}

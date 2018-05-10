@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+  {% for message in form.username.errors %}
+  <div class="alert alert-danger alert-dismissable fade in">
+    <strong>Error:</strong> {{ message }}
+  </div>
+  {% endfor %}
+  {% for message in form.password.errors %}
+  <div class="alert alert-danger alert-dismissable fade in">
+    <strong>Error:</strong> {{ message }}
+  </div>
+  {% endfor %}
+
+
+  <form action="{{ url_for('signin') }}" method=post>
+  	<div class="login">
+		<div class="login-screen">
+			<div class="app-title">
+				<h1>Sign in</h1>
+			</div>
+            {{ form.hidden_tag() }}
+
+			<div class="login-form">
+				<div class="control-group">
+                    {{ form.username(class="login-field", placeholder="username") }}
+				</div>
+
+				<div class="control-group">
+                    {{ form.password(class="login-field", placeholder="password") }}
+				</div>
+
+                    {{ form.submit(class='btn')}}
+			    <br>
+			</div>
+
+            No account? <a href="{{ url_for('signup')}}">Register!</a><br>
+<!--             <a href="/forgotpw">Forgot password?</a>
+ -->		</div>
+	</div>
+  </form>
+
+
+{% endblock %}

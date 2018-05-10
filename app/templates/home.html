@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" href={{ url_for('static', filename='css/profile.css') }} type="text/css">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<style>
+  #home-div {
+    /*min-height: 50vh;*/
+  }
+</style>
+<br>
+<div id="home-div" class="container gallery2-container">
+  <h1><div class="typingparagraph"></div></h1>
+  <h3><div class="typingparagraph2"></div></h3>
+</div>
+<br><br><br><br><br>
+<script>
+var title = 'Welcome to Our A3 of ECE1779: A Math Solving Website.';
+var con = $('.typingparagraph');
+var index = 0;
+var length = title.length;
+var tId = null;
+
+function start(){
+  con.text('');
+
+  tId=setInterval(function(){
+    if (title.charAt(index) == '\n'){
+      con.append("<br />" );
+    }
+    else{
+      con.append(title.charAt(index));
+    }
+    if(index < length){
+      index++;
+    }
+    else{
+      clearInterval(tId);
+    }
+
+  },100);
+}
+
+var content = 'This website provides 2 functions:\n\
+1. A hand-written mathematic equations solving engine.\n\
+2. A question and answer (Q&A) community.';
+var con2 = $('.typingparagraph2');
+var index2 = 0;
+var length2 = content.length;
+var tId2 = null;
+
+function start2(){
+  con2.text('');
+
+    tId2=setInterval(function(){
+      if (index>=length){
+        if (content.charAt(index2) == '\n'){
+          con2.append("<br />" );
+        }
+        else{
+          con2.append(content.charAt(index2));
+        }
+        if(index2 < length2){
+          index2++;
+        }
+        else{
+          clearInterval(tId2);
+        }
+      }
+      },100);
+}
+
+start();
+start2();
+</script>
+{% endblock %}

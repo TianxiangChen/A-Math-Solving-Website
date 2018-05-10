@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" href={{ url_for('static', filename='css/profile.css') }} type="text/css">
+<link rel="stylesheet" href={{ url_for('static', filename='css/typewriter.css') }} type="text/css">
+<head>
+    <meta charset="UTF-8">
+    <title>About</title>
+</head>
+<div class="container gallery-container">
+  <br>
+    <h1><div align="center "class="typingparagraph"></div></h1>
+
+    <p class="about"> Author: Luyuan Chen (999516082)<br>Author: Tianxiang Chen (999473181)</p>
+    <p class="about"> </p>
+    <p class="about"> This is the assignment 3 for <i>ECE1779 Introduction to Cloud computing</i>.
+        <br>
+        You can upload your questions about math on to the website and get answer, how cool is that!
+        <br>
+        Also, a Q&ampA community is availble where you can ask and answer questions to interact with other users.
+        <br>
+        Hopr you like the design.
+
+        <p class="page-description text-center">Try me by signing up!</p>
+        <form action="{{ url_for('signup') }}" method="GET">
+        <button type="submit" class="btn btn-sm btn-primary" id="js-upload-submit">Signup</button>
+      </form><br>
+</div>
+<script>
+var title = 'About the Assignment';
+var con = $('.typingparagraph');
+var index = 0;
+var length = title.length;
+var tId = null;
+
+function start(){
+
+  con.text('');
+  tId=setInterval(function(){
+    if (title.charAt(index) == '\n'){
+      con.append("<br />" );
+    }
+    else{
+      con.append(title.charAt(index));
+    }
+    if(index < length){
+      index++;
+    }
+    else{
+      clearInterval(tId);
+    }
+  },100);
+}
+
+start();
+</script>
+{% endblock %}

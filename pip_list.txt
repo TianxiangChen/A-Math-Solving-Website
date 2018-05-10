@@ -1,0 +1,8 @@
+pip install Flask
+pip install werkzeug
+pip install Flask-WTF
+pip install wand
+pip install zappa
+pip install boto3
+pip install sympy
+
