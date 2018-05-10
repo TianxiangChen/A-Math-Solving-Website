@@ -6,7 +6,7 @@ import json
 import re
 import sympy
 from latex2sympy import process_latex
-from math_account import math_acc_config
+from math_recog.math_account import math_acc_config
 '''
 Input: a path for a picture which contains some math equations
 the file_path should be from S3

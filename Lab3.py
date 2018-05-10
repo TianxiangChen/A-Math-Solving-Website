@@ -294,7 +294,10 @@ def submit_question():
 def question_detail(questionid):
     questionid = int(questionid)
     is_logged_in = user_logged_in()
-    is_confirmed = int(db_config.user_check_confirmed(session['username']))
+    if 'username' in session:
+        is_confirmed = int(db_config.user_check_confirmed(session['username']))
+    else:
+        is_confirmed = 0
     # Get question details for questionid
     q_detail = db_config.get_a_qanda(questionid)
     answers = db_config.get_qanda_answers(questionid)
