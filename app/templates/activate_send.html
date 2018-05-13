@@ -5,15 +5,23 @@
     <meta charset="UTF-8">
     <title>Acitivation</title>
 </head>
+<style>
+  form{
+    text-align: center;
+  }
+</style>
 <div class="container gallery-container">
   <br>
     <h1>You are almost finishing the registration...</h1>
     <h3>Before starting to use your account, please activate your account by the email.</h3><br>
     <h4 align="center">A confirmation email has been sent to: </h4>
     <h5 align="center">{{ encrypted_email }}</h5><br>
-    <h4 align="center">Please check your email.</h4>
-    <form action="{{ url_for('home') }}" method="GET">
-      <button type="submit" class="btn btn-outline-secondary">Back to Homepage</button>
+    <h4 align="center">Please check your email. If you cannot receive the mail, you can change your mail address.</h4>
+    <form class="form-horizontal" action="{{ url_for('home') }}" method="GET">
+      <button type="submit" class="btn-Primary btn-lg">Back to Homepage</button>
+    </form><br>
+    <form action="{{ url_for('retype_email') }}" method="GET">
+      <button type="submit" class="btn-warning btn-lg">Change Email</button>
     </form>
     <br>
 </div>

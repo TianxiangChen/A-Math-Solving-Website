@@ -47,10 +47,15 @@ def check_confirmed(f):
 def home():
     return render_template('home.html')
 
+
 # handle error
 @webapp.errorhandler(404)
 def page_not_found(e):
-    return render_template('error.html'), 404
+    return render_template('error404.html'), 404
+
+@webapp.errorhandler(405)
+def page_not_found(e):
+    return render_template('error405.html'), 405
 
 
 # @webapp.route('/test/FileUpload', methods=['GET', 'POST'])
@@ -71,6 +76,7 @@ def page_not_found(e):
 #         # user authenticated
 #         save_photos(files, user)
 #         return render_template('testFileUpload.html')
+
 
 """Signin page handler."""
 @webapp.route('/signin', methods=['GET', 'POST'])
@@ -152,22 +158,28 @@ def activate_send():
     mail = db_config.user_email(username)
     token = generate_confirmation_token(mail)
     confirm_url = url_for('confirm_email', token=token, _external=True)
+
     html = render_template('email.html', confirm_url=confirm_url)
     subject = "Please confirm your account registration"
     encrypted_email = encrypt_email(mail)
-    result = send_email(mail, subject, html)
-    if result == False:
-        return render_template('retype_email.html', encrypted_email=encrypted_email)
+    send_email(mail, subject, html)
+
     return render_template('activate_send.html', encrypted_email=encrypted_email)
 
 
-@webapp.route('/retype_email', methods = ['GET', 'POST'])
+@webapp.route('/retype_email', methods = ['GET','POST'])
 @login_required
 def retype_email():
     if request.method == 'POST':
         newEmail = request.form['new_email']
         db_config.set_user_email(session['username'], newEmail)
         return redirect(url_for('activate'))
+
+    username = session['username']
+    mail = db_config.user_email(username)
+    encrypted_email = encrypt_email(mail)
+    return render_template('retype_email.html', encrypted_email=encrypted_email)
+
 
 @webapp.route('/confirm/<token>')
 @login_required
@@ -435,8 +447,10 @@ def encrypt_email(email):
     encrypted_email = ''.join(email_word_list)
     return encrypted_email
 
+
 def generate_confirmation_token(email):
     return serializer.dumps(email, salt = mail_config['SECURITY_PASSWORD_SALT'])
+
 
 def confirm_token(token, expiration=3600):
     try:
@@ -449,6 +463,7 @@ def confirm_token(token, expiration=3600):
         return False
     return email
 
+
 def send_email(to, subject, template):
     msg = Message(
         subject,
@@ -456,10 +471,8 @@ def send_email(to, subject, template):
         html=template,
         sender='tianxiang.chen@mail.utoronto.ca'
     )
-    result = mail.send(msg)
-    if result == None:
-        return False
-    return True
+    mail.send(msg)
+
 
 if __name__ == '__main__':
     webapp.run()
